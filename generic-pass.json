@@ -1,48 +1,72 @@
 {
-  "genericType": "GENERIC_TYPE_UNSPECIFIED",
-  "hexBackgroundColor": "#4285f4",
+  "id": "",
+  "classId": "",
   "logo": {
     "sourceUri": {
       "uri": "https://storage.googleapis.com/wallet-lab-tools-codelab-artifacts-public/pass_google_logo.jpg"
+    },
+    "contentDescription": {
+      "defaultValue": {
+        "language": "en",
+        "value": "LOGO_DESCRIPTION"
+      }
     }
   },
+  "textModulesData": [
+    {
+      "id": "raised",
+      "header": "RAISED",
+      "body": "£19,012"
+    },
+    {
+      "id": "progress",
+      "header": "PROGRESS",
+      "body": "73%"
+    },
+    {
+      "id": "ending",
+      "header": "ENDING",
+      "body": "24/09/22"
+    },
+    {
+      "id": "on_behalf_of",
+      "header": "On behalf of",
+      "body": "Barnados"
+    }
+  ],
   "cardTitle": {
     "defaultValue": {
       "language": "en",
-      "value": "Google I/O '22 [DEMO ONLY]"
+      "value": "JustGiving"
     }
   },
   "subheader": {
     "defaultValue": {
       "language": "en",
-      "value": "Attendee"
+      "value": "Organised by"
     }
   },
   "header": {
     "defaultValue": {
       "language": "en",
-      "value": "Alex McJacobs"
+      "value": "David Mulford"
     }
   },
   "barcode": {
     "type": "QR_CODE",
-    "value": "12345"
+    "value": "https://www.justgiving.com/",
+    "alternateText": "https://www.justgiving.com/"
   },
+  "hexBackgroundColor": "#7a04dd",
   "heroImage": {
     "sourceUri": {
-      "uri": "https://storage.googleapis.com/wallet-lab-tools-codelab-artifacts-public/google-io-hero-demo-only.jpg"
-    }
-  },
-  "textModulesData": [
-    {
-      "header": "POINTS",
-      "body": "99",
-      "id": "points"
+      "uri": "https://storage.googleapis.com/wallet-lab-tools-codelab-artifacts-public/google-io-hero-demo-only.png"
     },
-    {
-      "header": "CONTACTS",
-      "body": "99",
-      "id": "contacts"
+    "contentDescription": {
+      "defaultValue": {
+        "language": "en",
+        "value": "HERO_IMAGE_DESCRIPTION"
+      }
     }
-  ]
+  }
 }
