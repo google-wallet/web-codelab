@@ -19,6 +19,7 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const { GoogleAuth } = require("google-auth-library");
 const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv").config();
 
 const serviceAccountFile =
   process.env.GOOGLE_APPLICATION_CREDENTIALS || "./key.json";
