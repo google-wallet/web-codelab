@@ -14,37 +14,49 @@
  * limitations under the License.
  */
 
-const express = require('express');
-const path = require('path');
-const bodyParser = require('body-parser');
-const { GoogleAuth } = require('google-auth-library');
-const jwt = require('jsonwebtoken');
+const express = require("express");
+const path = require("path");
+const bodyParser = require("body-parser");
+const { GoogleAuth } = require("google-auth-library");
+const jwt = require("jsonwebtoken");
 
-const serviceAccountFile = process.env.GOOGLE_APPLICATION_CREDENTIALS || '/path/to/key.json';
-const issuerId = process.env.WALLET_ISSUER_ID || '<issuer ID>';
-const classId = process.env.WALLET_CLASS_ID || 'test-class-id';
+const serviceAccountFile =
+  process.env.GOOGLE_APPLICATION_CREDENTIALS || "./key.json";
+const issuerId = process.env.WALLET_ISSUER_ID || "<issuer ID>";
+const classId = process.env.WALLET_CLASS_ID || "test-class-id";
 
 async function createPassAndToken(req, res) {
   const credentials = require(serviceAccountFile);
   const httpClient = new GoogleAuth({
     credentials: credentials,
-    scopes: 'https://www.googleapis.com/auth/wallet_object.issuer'
+    scopes: "https://www.googleapis.com/auth/wallet_object.issuer",
   });
 
-  const objectUrl = 'https://walletobjects.googleapis.com/walletobjects/v1/genericObject/';
-  const objectPayload = require('./generic-pass.json');
+  const objectUrl =
+    "https://walletobjects.googleapis.com/walletobjects/v1/genericObject/";
+  const objectPayload = require("./generic-pass.json");
 
-  objectPayload.id = `${issuerId}.${req.body.email.replace(/[^\w.-]/g, '_')}-${classId}`;
+  objectPayload.id = `${issuerId}.${req.body.email.replace(
+    /[^\w.-]/g,
+    "_"
+  )}-${classId}`;
   objectPayload.classId = `${issuerId}.${classId}`;
 
   let objectResponse;
   try {
-    objectResponse = await httpClient.request({url: objectUrl + objectPayload.id, method: 'GET'});
-    console.log('existing object', objectPayload.id);
+    objectResponse = await httpClient.request({
+      url: objectUrl + objectPayload.id,
+      method: "GET",
+    });
+    console.log("existing object", objectPayload.id);
   } catch (err) {
     if (err.response && err.response.status === 404) {
-      objectResponse = await httpClient.request({url: objectUrl, method: 'POST', data: objectPayload});
-      console.log('new object', objectPayload.id);
+      objectResponse = await httpClient.request({
+        url: objectUrl,
+        method: "POST",
+        data: objectPayload,
+      });
+      console.log("new object", objectPayload.id);
     } else {
       console.error(err);
       throw err;
@@ -53,22 +65,24 @@ async function createPassAndToken(req, res) {
 
   const claims = {
     iss: credentials.client_email, // `client_email` in service account file.
-    aud: 'google',
-    origins: ['http://localhost:3000'],
-    typ: 'savetowallet',
+    aud: "google",
+    origins: ["http://localhost:3000"],
+    typ: "savetowallet",
     payload: {
-      genericObjects: [{id: objectPayload.id}],
+      genericObjects: [{ id: objectPayload.id }],
     },
   };
 
-  const token = jwt.sign(claims, credentials.private_key, {algorithm: 'RS256'});
+  const token = jwt.sign(claims, credentials.private_key, {
+    algorithm: "RS256",
+  });
   const saveUrl = `https://pay.google.com/gp/v/save/${token}`;
   res.send(`<a href="${saveUrl}"><img src="wallet-button.png"></a>`);
 }
 
 const app = express();
 
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static('public'));
-app.post('/', createPassAndToken);
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static("public"));
+app.post("/", createPassAndToken);
 app.listen(3000);
