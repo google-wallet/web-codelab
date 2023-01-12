@@ -8,15 +8,43 @@
     "contentDescription": {
       "defaultValue": {
         "language": "en",
-        "value": "LOGO_DESCRIPTION"
+        "value": "JustGiving Fundraiser page wallet item"
       }
+    }
+  },
+  "cardTitle": {
+    "defaultValue": {
+      "language": "en",
+      "value": "JustGiving"
+    }
+  },
+  "subheader": {
+    "defaultValue": {
+      "language": "en",
+      "value": "FUNDRAISING"
+    }
+  },
+  "header": {
+    "defaultValue": {
+      "language": "en",
+      "value": "Help keep the Warren Primary "
     }
   },
   "textModulesData": [
     {
+      "id": "organised_by",
+      "header": "organised by",
+      "body": "David Mulford"
+    },
+    {
+      "id": "on_behalf_of",
+      "header": "on behalf of",
+      "body": "Barnardos"
+    },
+    {
       "id": "raised",
       "header": "RAISED",
-      "body": "£19,012"
+      "body": "£19,102"
     },
     {
       "id": "progress",
@@ -27,40 +55,17 @@
       "id": "ending",
       "header": "ENDING",
       "body": "24/09/22"
-    },
-    {
-      "id": "on_behalf_of",
-      "header": "On behalf of",
-      "body": "Barnados"
     }
   ],
-  "cardTitle": {
-    "defaultValue": {
-      "language": "en",
-      "value": "JustGiving"
-    }
-  },
-  "subheader": {
-    "defaultValue": {
-      "language": "en",
-      "value": "Organised by"
-    }
-  },
-  "header": {
-    "defaultValue": {
-      "language": "en",
-      "value": "David Mulford"
-    }
-  },
   "barcode": {
     "type": "QR_CODE",
-    "value": "https://www.justgiving.com/",
-    "alternateText": "https://www.justgiving.com/"
+    "value": "justgive.to",
+    "alternateText": "justgive.to"
   },
-  "hexBackgroundColor": "#7a04dd",
+  "hexBackgroundColor": "#540099",
   "heroImage": {
     "sourceUri": {
-      "uri": "https://storage.googleapis.com/wallet-lab-tools-codelab-artifacts-public/google-io-hero-demo-only.png"
+      "uri": "https://www.jg-cdn.com/assets/jg-homepage/469edeb56a76d5872213d6e43ba47ec2.png"
     },
     "contentDescription": {
       "defaultValue": {
