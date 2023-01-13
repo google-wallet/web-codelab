@@ -5,6 +5,7 @@ const { GoogleAuth } = require("google-auth-library");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv").config();
 const axios = require("axios");
+const { DateTime } = require("luxon");
 
 const serviceAccountFile =
   process.env.GOOGLE_APPLICATION_CREDENTIALS || "./key.json";
@@ -48,7 +49,8 @@ async function generatePassWithPageData(pageData, email) {
   objectPayload.textModulesData[3].body = `${Math.round(
     (pageRaised / pageTarget) * 100
   )}%`;
-  objectPayload.textModulesData[4].body = pageEndDate.split("T")[0];
+  objectPayload.textModulesData[4].body =
+    DateTime.fromISO(pageEndDate).toLocaleString();
   objectPayload.barcode.alternateText = pageUrl;
 
   async function createClass(issuerId, classSuffix) {
