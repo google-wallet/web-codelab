@@ -75,6 +75,7 @@ async function generatePassWithPageData(pageData, email) {
   objectPayload.textModulesData[4].body =
     DateTime.fromISO(pageEndDate).toLocaleString();
   objectPayload.barcode.alternateText = barcodeShortUrl;
+  objectPayload.barcode.value = barcodeShortUrl;
 
   async function createClass(issuerId, classSuffix) {
     let response;
