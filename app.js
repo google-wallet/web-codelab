@@ -11,6 +11,7 @@ const serviceAccountFile =
   process.env.GOOGLE_APPLICATION_CREDENTIALS || "./key.json";
 const issuerId = process.env.WALLET_ISSUER_ID || "<issuer ID>";
 const classId = process.env.WALLET_CLASS_ID || "test-class-id";
+const shortAPI = process.env.SHORT_URL_API;
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -25,6 +26,28 @@ async function generatePassWithPageData(pageData, email) {
   const pageCharity = pageData.relationships.beneficiaries.nodes[0].name;
   const pageEndDate = pageData.endDate;
 
+  async function getShortLink() {
+    let data = {
+      domain: "61sq.short.gy",
+      originalURL: pageUrl,
+    };
+
+    let short = axios
+      .post("https://api.short.io/links/public", data, {
+        headers: {
+          accept: "application/json",
+          "Content-Type": "application/json",
+          authorization: shortAPI,
+        },
+      })
+      .then(function (response) {
+        return response.data.shortURL;
+      });
+
+    return short;
+  }
+
+  const barcodeShortUrl = await getShortLink();
   const credentials = require(serviceAccountFile);
   const httpClient = new GoogleAuth({
     credentials: credentials,
@@ -51,7 +74,7 @@ async function generatePassWithPageData(pageData, email) {
   )}%`;
   objectPayload.textModulesData[4].body =
     DateTime.fromISO(pageEndDate).toLocaleString();
-  objectPayload.barcode.alternateText = pageUrl;
+  objectPayload.barcode.alternateText = barcodeShortUrl;
 
   async function createClass(issuerId, classSuffix) {
     let response;
