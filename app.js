@@ -1,26 +1,10 @@
-/*
- * Copyright 2022 Google Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const { GoogleAuth } = require("google-auth-library");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv").config();
-const axios = require('axios')
+const axios = require("axios");
 
 const serviceAccountFile =
   process.env.GOOGLE_APPLICATION_CREDENTIALS || "./key.json";
@@ -31,14 +15,14 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-async function generatePassWithPageData (pageData, email) {
-  const pageName = pageData.title
-  const pageOwner = pageData.pageOwner
-  const pageUrl = pageData.url
-  const pageTarget = pageData.targetWithCurrency.value
-  const pageRaised = pageData.donationSummary.totalAmount.value
-  const pageCharity = pageData.relationships.beneficiaries.nodes[0].name
-  const pageEndDate = pageData.endDate
+async function generatePassWithPageData(pageData, email) {
+  const pageName = pageData.title;
+  const pageOwner = pageData.pageOwner;
+  const pageUrl = pageData.url;
+  const pageTarget = pageData.targetWithCurrency.value;
+  const pageRaised = pageData.donationSummary.totalAmount.value;
+  const pageCharity = pageData.relationships.beneficiaries.nodes[0].name;
+  const pageEndDate = pageData.endDate;
 
   const credentials = require(serviceAccountFile);
   const httpClient = new GoogleAuth({
@@ -48,21 +32,101 @@ async function generatePassWithPageData (pageData, email) {
 
   const objectUrl =
     "https://walletobjects.googleapis.com/walletobjects/v1/genericObject/";
+  const classUrl =
+    "https://walletobjects.googleapis.com/walletobjects/v1/genericClass/";
   const objectPayload = require("./generic-pass.json");
+  const classPayload = require("./class.json");
 
-  objectPayload.id = `${issuerId}.${email.replace(
-    /[^\w.-]/g,
-    "_"
-  )}-${classId}`;
-  objectPayload.classId = `${issuerId}.${classId}`;
+  objectPayload.id = `${issuerId}.${email.replace(/[^\w.-]/g, "_")}-${classId}`;
+  objectPayload.classId = `${issuerId}.test3`;
+  classPayload.id = `${issuerId}.${classId}`;
 
   objectPayload.header.defaultValue.value = pageName;
   objectPayload.textModulesData[0].body = pageOwner;
   objectPayload.textModulesData[1].body = pageCharity;
-  objectPayload.textModulesData[2].body = `£${pageRaised/100}`
-  objectPayload.textModulesData[3].body = `${(pageRaised/pageTarget)}`
-  objectPayload.textModulesData[4].body = pageEndDate;
-  objectPayload.barcode.alternateText = pageUrl
+  objectPayload.textModulesData[2].body = `£${pageRaised / 100}`;
+  objectPayload.textModulesData[3].body = `${Math.round(
+    (pageRaised / pageTarget) * 100
+  )}%`;
+  objectPayload.textModulesData[4].body = pageEndDate.split("T")[0];
+  objectPayload.barcode.alternateText = pageUrl;
+
+  async function createClass(issuerId, classSuffix) {
+    let response;
+    let newClass = {
+      id: `${issuerId}.${classSuffix}`,
+      classTemplateInfo: {
+        cardTemplateOverride: {
+          cardRowTemplateInfos: [
+            {
+              twoItems: {
+                startItem: {
+                  firstValue: {
+                    fields: [
+                      {
+                        fieldPath: "object.textModulesData['organised_by']",
+                      },
+                    ],
+                  },
+                },
+                endItem: {
+                  firstValue: {
+                    fields: [
+                      {
+                        fieldPath: "object.textModulesData['on_behalf_of']",
+                      },
+                    ],
+                  },
+                },
+              },
+            },
+            {
+              threeItems: {
+                startItem: {
+                  firstValue: {
+                    fields: [
+                      {
+                        fieldPath: "object.textModulesData['raised']",
+                      },
+                    ],
+                  },
+                },
+                middleItem: {
+                  firstValue: {
+                    fields: [
+                      {
+                        fieldPath: "object.textModulesData['progress']",
+                      },
+                    ],
+                  },
+                },
+                endItem: {
+                  firstValue: {
+                    fields: [
+                      {
+                        fieldPath: "object.textModulesData['ending']",
+                      },
+                    ],
+                  },
+                },
+              },
+            },
+          ],
+        },
+      },
+    };
+
+    response = await httpClient.request({
+      url: classUrl,
+      method: "POST",
+      data: newClass,
+    });
+
+    console.log("Class insert response");
+    console.log(response);
+
+    return `${issuerId}.${classSuffix}`;
+  }
 
   let objectResponse;
   try {
@@ -85,13 +149,22 @@ async function generatePassWithPageData (pageData, email) {
     }
   }
 
+  const classExists = await httpClient.request({
+    url: `${classUrl}${issuerId}.test3`,
+    method: "GET",
+  });
+
+  if (!classExists) {
+    createClass(issuerId, "test3");
+  }
+
   const claims = {
     iss: credentials.client_email, // `client_email` in service account file.
     aud: "google",
     origins: ["http://localhost:3000"],
     typ: "savetowallet",
     payload: {
-      genericObjects: [{ id: objectPayload.id }],
+      genericObjects: [objectPayload],
     },
   };
 
@@ -104,19 +177,24 @@ async function generatePassWithPageData (pageData, email) {
 app.get("/:pageSlug", async (req, res) => {
   const frpSlug = req.params.pageSlug;
 
-  const payload =   {
-    "operationName": null,
-    "variables": {},
-    "query": `{\n  page(type: ONE_PAGE, slug: \"page/${frpSlug}\") {\n    title\n    owner {\n      name\n    }\n    url\n    targetWithCurrency {\n      value\n      currencyCode\n    }\n    donationSummary {\n      totalAmount {\n        value\n      }\n    }\n    endDate\n    relationships {\n      beneficiaries(first: 5) {\n        nodes {\n          ... on Charity {\n            name\n          }\n        }\n      }\n    }\n  }\n}\n`
+  const payload = {
+    operationName: null,
+    variables: {},
+    query: `{\n  page(type: ONE_PAGE, slug: \"page/${frpSlug}\") {\n    title\n    owner {\n      name\n    }\n    url\n    targetWithCurrency {\n      value\n      currencyCode\n    }\n    donationSummary {\n      totalAmount {\n        value\n      }\n    }\n    endDate\n    relationships {\n      beneficiaries(first: 5) {\n        nodes {\n          ... on Charity {\n            name\n          }\n        }\n      }\n    }\n  }\n}\n`,
   };
 
-  const pageDataRes = await axios.post('https://graphql.staging.justgiving.com/', payload);
-  const pageData = pageDataRes.data.data.page
+  const pageDataRes = await axios.post(
+    "https://graphql.staging.justgiving.com/",
+    payload
+  );
+  const pageData = pageDataRes.data.data.page;
 
-  const saveURL = await generatePassWithPageData(pageData, 'testing@gmail.com');
+  const saveURL = await generatePassWithPageData(
+    pageData,
+    `testing${Math.random()}@gmail.com`
+  );
 
   res.send(saveURL);
-})
-
+});
 
 app.listen(3000);

@@ -1,0 +1,62 @@
+{
+    "id": "",
+    "classTemplateInfo": {
+        "cardTemplateOverride": {
+            "cardRowTemplateInfos": [
+                {
+                    "twoItems": {
+                        "startItem": {
+                            "firstValue": {
+                                "fields": [
+                                    {
+                                        "fieldPath": "object.textModulesData['organised_by']"
+                                    }
+                                ]
+                            }
+                        },
+                        "endItem": {
+                            "firstValue": {
+                                "fields": [
+                                    {
+                                        "fieldPath": "object.textModulesData['on_behalf_of']"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                {
+                    "threeItems": {
+                        "startItem": {
+                            "firstValue": {
+                                "fields": [
+                                    {
+                                        "fieldPath": "object.textModulesData['raised']"
+                                    }
+                                ]
+                            }
+                        },
+                        "middleItem": {
+                            "firstValue": {
+                                "fields": [
+                                    {
+                                        "fieldPath": "object.textModulesData['progress']"
+                                    }
+                                ]
+                            }
+                        },
+                        "endItem": {
+                            "firstValue": {
+                                "fields": [
+                                    {
+                                        "fieldPath": "object.textModulesData['ending']"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}
