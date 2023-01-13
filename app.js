@@ -28,7 +28,7 @@ async function generatePassWithPageData(pageData, email) {
 
   async function getShortLink() {
     let data = {
-      domain: "61sq.short.gy",
+      domain: "justgive.to",
       originalURL: pageUrl,
     };
 
