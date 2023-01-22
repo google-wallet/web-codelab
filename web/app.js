@@ -24,7 +24,7 @@ const jwt = require('jsonwebtoken');
 const issuerId = 'ISSUER_ID';
 
 // TODO: Define Class ID
-const classId = `${issuerId}.test-class-id`;
+const classId = `${issuerId}.codelab_class`;
 
 const baseUrl = 'https://walletobjects.googleapis.com/walletobjects/v1';
 
