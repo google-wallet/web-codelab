@@ -48,7 +48,7 @@ async function createPassClass(req, res) {
                 'firstValue': {
                   'fields': [
                     {
-                      'fieldPath': 'object.textModulesData["points"]'
+                    'fieldPath': "object.textModulesData['points']"
                     }
                   ]
                 }
@@ -57,7 +57,7 @@ async function createPassClass(req, res) {
                 'firstValue': {
                   'fields': [
                     {
-                      'fieldPath': 'object.textModulesData["contacts"]'
+                      'fieldPath': "object.textModulesData['contacts']"
                     }
                   ]
                 }
@@ -73,7 +73,7 @@ async function createPassClass(req, res) {
               'firstValue': {
                 'fields': [
                   {
-                    'fieldPath': 'class.imageModulesData["event_banner"]'
+                    'fieldPath': "class.imageModulesData['event_banner']"
                   }
                 ]
               }
@@ -84,7 +84,7 @@ async function createPassClass(req, res) {
               'firstValue': {
                 'fields': [
                   {
-                    'fieldPath': 'class.textModulesData["game_overview"]'
+                    'fieldPath': "class.textModulesData['game_overview']"
                   }
                 ]
               }
@@ -95,7 +95,7 @@ async function createPassClass(req, res) {
               'firstValue': {
                 'fields': [
                   {
-                    'fieldPath': 'class.linksModuleData.uris["official_site"]'
+                    'fieldPath': "class.linksModuleData.uris['official_site']"
                   }
                 ]
               }
