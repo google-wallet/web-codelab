@@ -34,7 +34,7 @@ const httpClient = new GoogleAuth({
   scopes: 'https://www.googleapis.com/auth/wallet_object.issuer'
 });
 
-async function createPassClass(req, res) {
+async function createPassClass(res) {
   // TODO: Create a Generic pass class
   let genericClass = {
     'id': `${classId}`,
@@ -167,7 +167,7 @@ async function createPassClass(req, res) {
   }
 }
 
-async function createPassObject(req, res) {
+async function createPassObject(req, res, classId) {
   // TODO: Create a new Generic pass for the user
   let objectSuffix = `${req.body.email.replace(/[^\w.-]/g, '_')}`;
   let objectId = `${issuerId}.${objectSuffix}`;
@@ -247,7 +247,7 @@ const app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static('public'));
 app.post('/', async (req, res) => {
-  await createPassClass(req, res);
-  await createPassObject(req, res);
+  await createPassClass(res);
+  await createPassObject(req, res, classId);
 });
 app.listen(3000);
