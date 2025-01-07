@@ -34,10 +34,25 @@ const httpClient = new GoogleAuth({
   scopes: 'https://www.googleapis.com/auth/wallet_object.issuer'
 });
 
+/**
+ * Creates a sample pass class based on the template defined below.
+ * 
+ * This class contains multiple editable fields that showcase how to 
+ * customize your class.
+ * 
+ * @param res A representation of the HTTP result in Express.
+ */
 async function createPassClass(res) {
   // TODO: Create a Generic pass class
 }
 
+/**
+ * Creates a sample pass object based on a given class.
+ * 
+ * @param req A representation of the HTTP request in Express.
+ * @param res A representation of the HTTP result in Express.
+ * @param classId The identifier of the parent class used to create the object.
+ */
 async function createPassObject(req, res, classId) {
   // TODO: Create a new Generic pass for the user
 }
