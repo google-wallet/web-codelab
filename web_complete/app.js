@@ -115,7 +115,7 @@ async function createPassClass(res) {
       {
         'mainImage': {
           'sourceUri': {
-            'uri': 'https://storage.googleapis.com/wallet-lab-tools-codelab-artifacts-public/google-io-2021-card.png'
+            'uri': 'https://codelabs.developers.google.com/static/add-to-wallet-web/images/google-io-2021-card.png'
           },
           'contentDescription': {
             'defaultValue': {
@@ -194,7 +194,7 @@ async function createPassObject(req, res, classId) {
     'hexBackgroundColor': '#4285f4',
     'logo': {
       'sourceUri': {
-        'uri': 'https://storage.googleapis.com/wallet-lab-tools-codelab-artifacts-public/pass_google_logo.jpg'
+        'uri': 'https://developers.google.com/static/wallet/site-assets/images/pass-builder/pass_google_logo.jpg'
       }
     },
     'cardTitle': {
@@ -221,7 +221,7 @@ async function createPassObject(req, res, classId) {
     },
     'heroImage': {
       'sourceUri': {
-        'uri': 'https://storage.googleapis.com/wallet-lab-tools-codelab-artifacts-public/google-io-hero-demo-only.jpg'
+        'uri': 'https://developers.google.com/static/wallet/site-assets/images/pass-builder/google-io-hero-demo-only.jpg'
       }
     },
     'textModulesData': [
