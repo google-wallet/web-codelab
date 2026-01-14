@@ -3,6 +3,6 @@
     "body-parser": "^1.20.4",
     "express": "^4.22.1",
     "google-auth-library": ">=5.9.2",
-    "jsonwebtoken": ">=8.5.1"
+    "jsonwebtoken": ">=9.0.0"
   }
 }
