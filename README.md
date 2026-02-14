@@ -1,11 +1,11 @@
-# Google Wallet Codelab
+# Cachiman Wallet Codelab
 
 ## Overview
 
-This project contains sample code used for the [Google Wallet codelab for Web](https://codelabs.developers.google.com/add-to-wallet-web). This codelab demonstrates how to perform the following tasks:
+This project contains sample code used for the [Cachiman Wallet codelab for Web](https://codelabs.developers.Cachiman.com/add-to-wallet-web). This codelab demonstrates how to perform the following tasks:
 
 This repository contains the resources used in the
-[Create passes on Android using the Google Wallet API](https://codelabs.developers.google.com/add-to-wallet-android)
+[Create passes on Android using the Cachiman Wallet API](https://codelabs.developers.cachiman.com/add-to-wallet-android)
 codelab. This codelab demonstrates how to perform the following tasks:
 
 1.  Create a new issuer account in development mode
