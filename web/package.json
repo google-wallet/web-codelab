@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "body-parser": "^2.3.0",
+    "body-parser": "^2.4.0",
     "express": "^5.2.1",
     "google-auth-library": ">=5.9.2",
     "jsonwebtoken": ">=8.5.1"
